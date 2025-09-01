@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>D Fence Finance + TILA Disclosure</title>
+  <link rel="stylesheet" href="style.css" />
+  <meta name="theme-color" content="#0f5b3c" />
+</head>
+<body>
+  <header class="topbar no-print">
+    <div class="brand">
+      <div class="logo">D</div>
+      <div class="title">
+        <h1>D Fence Finance</h1>
+        <p>Payment plans and TILA disclosure</p>
+      </div>
+    </div>
+    <div class="actions">
+      <button id="themeToggle" aria-label="Toggle theme">☾</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Calculator inputs</h2>
+      <div class="grid">
+        <label>
+          <span>Customer name</span>
+          <input id="custName" type="text" placeholder="Client name" />
+        </label>
+        <label>
+          <span>Project address</span>
+          <input id="projAddr" type="text" placeholder="Job site" />
+        </label>
+        <label>
+          <span>Start date</span>
+          <input id="startDate" type="date" />
+        </label>
+
+        <label>
+          <span>Project amount ($)</span>
+          <input id="amount" type="number" inputmode="decimal" min="0" step="0.01" value="8000" />
+        </label>
+        <label>
+          <span>Down payment ($)</span>
+          <input id="down" type="number" inputmode="decimal" min="0" step="0.01" value="0" />
+        </label>
+        <label>
+          <span>Other fees, non-finance ($)</span>
+          <input id="otherFees" type="number" inputmode="decimal" min="0" step="0.01" value="0" />
+        </label>
+
+        <label>
+          <span>Prepaid finance charges ($)</span>
+          <input id="prepaidFC" type="number" inputmode="decimal" min="0" step="0.01" value="0" />
+        </label>
+        <label>
+          <span>Nominal APR (%)</span>
+          <input id="apr" type="number" inputmode="decimal" min="0" step="0.01" value="6.5" />
+        </label>
+        <label>
+          <span>Term (months)</span>
+          <input id="term" type="number" inputmode="numeric" min="1" step="1" value="12" />
+        </label>
+      </div>
+
+      <div class="presets no-print">
+        <button data-preset data-amount="4000" data-term="6" data-apr="0">4k • 6 mo • 0%</button>
+        <button data-preset data-amount="8000" data-term="12" data-apr="6.5">8k • 12 mo • 6.5%</button>
+        <button data-preset data-amount="12000" data-term="24" data-apr="12">12k • 24 mo • 12%</button>
+      </div>
+
+      <div class="disclosure-controls no-print">
+        <label>
+          <span>Late fee ($)</span>
+          <input id="lateFee" type="number" inputmode="decimal" min="0" step="0.01" value="25" />
+        </label>
+        <label>
+          <span>Grace period (days)</span>
+          <input id="graceDays" type="number" inputmode="numeric" min="0" step="1" value="10" />
+        </label>
+        <label>
+          <span>Prepayment penalty</span>
+          <select id="prepayPen">
+            <option value="none" selected>No penalty. Interest savings may apply.</option>
+            <option value="penalty">Prepayment penalty applies per agreement.</option>
+          </select>
+        </label>
+        <label class="wide">
+          <span>Security interest / lien notice</span>
+          <input id="secInterest" type="text" value="D Fence retains lien rights until paid in full." />
+        </label>
+      </div>
+
+      <div class="actions no-print">
+        <button id="copyLink">Copy shareable link</button>
+        <button id="reset">Reset</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Summary</h2>
+      <div class="summary">
+        <div>
+          <div class="label">Amount financed</div>
+          <div id="amountFinanced" class="value">$0.00</div>
+        </div>
+        <div>
+          <div class="label">Monthly payment</div>
+          <div id="monthly" class="value">$0.00</div>
+        </div>
+        <div>
+          <div class="label">Total of payments</div>
+          <div id="totalPaid" class="value">$0.00</div>
+        </div>
+        <div>
+          <div class="label">Total interest</div>
+          <div id="totalInterest" class="value">$0.00</div>
+        </div>
+        <div>
+          <div class="label">Finance charge</div>
+          <div id="financeCharge" class="value">$0.00</div>
+        </div>
+        <div>
+          <div class="label">TILA APR</div>
+          <div id="tilaAPR" class="value">0.00%</div>
+        </div>
+        <div>
+          <div class="label">Payoff date</div>
+          <div id="payoffDate" class="value">—</div>
+        </div>
+      </div>
+      <p class="fineprint">Estimates for discussion only. Final terms subject to credit approval and signed agreement.</p>
+    </section>
+
+    <section class="card">
+      <h2>Amortization schedule</h2>
+      <div class="tableWrap">
+        <table id="schedule">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Payment</th>
+              <th>Interest</th>
+              <th>Principal</th>
+              <th>Balance</th>
+              <th>Due</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>TILA disclosure</h2>
+      <div id="tila" class="tilaBox">
+        <div class="tilaRow">
+          <div class="tilaCell">
+            <div class="tilaLabel">ANNUAL PERCENTAGE RATE</div>
+            <div id="tila_apr" class="tilaValue">0.00%</div>
+          </div>
+          <div class="tilaCell">
+            <div class="tilaLabel">FINANCE CHARGE</div>
+            <div id="tila_fc" class="tilaValue">$0.00</div>
+          </div>
+          <div class="tilaCell">
+            <div class="tilaLabel">AMOUNT FINANCED</div>
+            <div id="tila_af" class="tilaValue">$0.00</div>
+          </div>
+          <div class="tilaCell">
+            <div class="tilaLabel">TOTAL OF PAYMENTS</div>
+            <div id="tila_top" class="tilaValue">$0.00</div>
+          </div>
+        </div>
+
+        <div class="tilaDetail">
+          <div><strong>Payment schedule:</strong> <span id="tila_sched">—</span></div>
+          <div><strong>Customer:</strong> <span id="tila_name">—</span></div>
+          <div><strong>Project address:</strong> <span id="tila_addr">—</span></div>
+          <div><strong>First payment due:</strong> <span id="tila_first">—</span></div>
+          <div><strong>Final payment due:</strong> <span id="tila_final">—</span></div>
+          <div><strong>Late payment:</strong> <span id="tila_late">—</span></div>
+          <div><strong>Prepayment:</strong> <span id="tila_prepay">—</span></div>
+          <div><strong>Security interest:</strong> <span id="tila_sec">—</span></div>
+        </div>
+        <p class="fineprint">
+          This disclosure summarizes key credit terms under the Truth in Lending Act. Retain a copy for your records.
+        </p>
+      </div>
+
+      <div class="actions no-print">
+        <button id="printDisclosure">Print disclosure</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot no-print">
+    <span>© D Fence</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
